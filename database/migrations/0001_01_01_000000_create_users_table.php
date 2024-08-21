@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('email', 50)->unique();
             $table->string('mobile', 16);
             $table->string('password');
-            $table->integer('otp', 4);
+            $table->integer('otp');
             $table->timestamps();
         });
 
