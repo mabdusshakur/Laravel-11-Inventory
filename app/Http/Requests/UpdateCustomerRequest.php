@@ -26,8 +26,7 @@ class UpdateCustomerRequest extends FormRequest
         return [
             'name' => 'required|string|max:50',
             'email' => 'required|email',
-            'mobile' => 'required|string|max:16',
-            'user_id' => 'required|integer|exists:users,id'
+            'mobile' => 'required|string|max:16'
         ];
     }
 
