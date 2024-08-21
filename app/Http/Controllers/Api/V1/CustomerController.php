@@ -15,7 +15,12 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return $this->sendSuccess("Customer list", CustomerResource::collection(Customer::all()));
+        try {
+            $customers = Customer::where('user_id', $this->getUserId(request()))->get();
+            return $this->sendSuccess("Customer list", CustomerResource::collection($customers));
+        } catch (\Throwable $th) {
+            return $this->sendError("Failed to get Customer list", 500, $th->getMessage());
+        }
     }
 
     /**
@@ -47,9 +52,10 @@ class CustomerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Customer $customer)
+    public function show($customer)
     {
         try {
+            $customer = Customer::where('user_id', $this->getUserId(request()))->findOrFail($customer);
             return $this->sendSuccess("Customer Details", new CustomerResource($customer));
         } catch (\Throwable $th) {
             return $this->sendError("Failed to get Customer Details", 500, $th->getMessage());
@@ -67,14 +73,15 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCustomerRequest $request, Customer $customer)
+    public function update(UpdateCustomerRequest $request, $customer)
     {
         try {
-            $customer->update([
+            $user_id = $this->getUserId($request);
+            $customer = Customer::where('user_id', $user_id)->findOrFail($customer)->update([
                 'name' => $request->name,
                 'email' => $request->email,
                 'mobile' => $request->mobile,
-                'user_id' => $this->getUserId($request),
+                'user_id' => $user_id,
             ]);
             return $this->sendSuccess("Customer Updated", new CustomerResource($customer));
         } catch (\Throwable $th) {
