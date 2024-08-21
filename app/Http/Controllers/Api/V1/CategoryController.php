@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Resources\CategoryResource;
 
 class CategoryController extends Controller
 {
@@ -14,7 +15,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $category = Category::where('user_id', $this->getUserId(request()))->get();
+            return $this->sendSuccess("Category list", CategoryResource::collection($category));
+        } catch (\Throwable $th) {
+            return $this->sendError("Failed to get Category list", 500, $th->getMessage());
+        }
     }
 
     /**
@@ -30,15 +36,28 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        try {
+            $category = Category::create([
+                'name' => $request->name,
+                'user_id' => $this->getUserId($request),
+            ]);
+            return $this->sendSuccess("Category Created", new CategoryResource($category), 201);
+        } catch (\Throwable $th) {
+            return $this->sendError("Failed to Create Category", 500, $th->getMessage());
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show($category)
     {
-        //
+        try {
+            $category = Category::where('user_id', $this->getUserId(request()))->findOrFail($category);
+            return $this->sendSuccess("Category Details", new CategoryResource($category));
+        } catch (\Throwable $th) {
+            return $this->sendError("Failed to get Category Details", 500, $th->getMessage());
+        }
     }
 
     /**
@@ -52,9 +71,19 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(UpdateCategoryRequest $request, $category)
     {
-        //
+        try {
+            $category = Category::where('user_id', $this->getUserId($request))->findOrFail($category)->update([
+                'name' => $request->name,
+            ]);
+            if (!$category) {
+                return $this->sendError("Category not found", 404);
+            }
+            return $this->sendSuccess("Category Updated", []);
+        } catch (\Throwable $th) {
+            return $this->sendError("Failed to Update Category", 500, $th->getMessage());
+        }
     }
 
     /**
@@ -62,6 +91,11 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        try {
+            $category->delete();
+            return $this->sendSuccess("Category Deleted", []);
+        } catch (\Throwable $th) {
+            return $this->sendError("Failed to Delete Category", 500, $th->getMessage());
+        }
     }
 }
