@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 abstract class Controller
 {
 
@@ -39,5 +41,23 @@ abstract class Controller
         ];
 
         return response()->json($response, $statusCode);
+    }
+
+    /**
+     * Summary of getUserId
+     * return user id from request header coming from TokenVerificationMiddleware
+     */
+    public function getUserId($request)
+    {
+        return $request->headers->get('id');
+    }
+
+    /**
+     * Summary of getUserEmail
+     * return user email from request header coming from TokenVerificationMiddleware
+     */
+    public function getUserEmail($request)
+    {
+        return $request->headers->get('id');
     }
 }
