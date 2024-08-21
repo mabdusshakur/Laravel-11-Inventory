@@ -3,6 +3,9 @@ namespace App\Helpers;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Illuminate\Support\Facades\Cache;
+
+
 
 class JWTToken
 {
@@ -32,20 +35,45 @@ class JWTToken
     /**
      * Decode a JWT token.
      *
-     * @param string|null $encodedToken The encoded JWT token to decode.
+     * @param string|null $token The encoded JWT token to decode.
      * @return mixed Returns the decoded object if successful, otherwise returns 'unauthorized'.
      */
-    public static function decodeToken($encodedToken)
+    public static function decodeToken($token)
     {
         try {
-            if ($encodedToken == null) {
+            if ($token == null) {
                 return 'Unauthorized';
-            } else {
-                $key = env('JWT_KEY');
-                return JWT::decode($encodedToken, new Key($key, 'HS256'));
             }
+            $key = env('JWT_KEY');
+
+            if (self::isTokenInvalid($token)) {
+                return 'Unauthorized';
+            }
+
+            return JWT::decode($token, new Key($key, 'HS256'));
         } catch (\Throwable $th) {
             return 'Unauthorized';
         }
+    }
+
+    /**
+     * Invalidates a token by storing it in the cache.
+     *
+     * @param string $token The token to invalidate.
+     */
+    public static function invalidateToken($token)
+    {
+        Cache::put($token, true, now()->addMonth());
+    }
+
+    /**
+     * Checks if a token is invalid.
+     *
+     * @param string $token The token to check.
+     * @return bool Returns true if the token is invalid, otherwise returns false.
+     */
+    public static function isTokenInvalid($token)
+    {
+        return Cache::has($token);
     }
 }
