@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Models\InvoiceProduct;
-use App\Http\Requests\StoreInvoiceProductRequest;
-use App\Http\Requests\UpdateInvoiceProductRequest;
+use App\Models\Product;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 
-class InvoiceProductController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +28,7 @@ class InvoiceProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreInvoiceProductRequest $request)
+    public function store(StoreProductRequest $request)
     {
         //
     }
@@ -35,7 +36,7 @@ class InvoiceProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(InvoiceProduct $invoiceProduct)
+    public function show(Product $product)
     {
         //
     }
@@ -43,7 +44,7 @@ class InvoiceProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(InvoiceProduct $invoiceProduct)
+    public function edit(Product $product)
     {
         //
     }
@@ -51,7 +52,7 @@ class InvoiceProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateInvoiceProductRequest $request, InvoiceProduct $invoiceProduct)
+    public function update(UpdateProductRequest $request, Product $product)
     {
         //
     }
@@ -59,7 +60,7 @@ class InvoiceProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(InvoiceProduct $invoiceProduct)
+    public function destroy(Product $product)
     {
         //
     }
