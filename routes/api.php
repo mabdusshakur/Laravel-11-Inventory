@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Middleware\TokenVerificationMiddleware;
 use Illuminate\Http\Request;
@@ -15,4 +17,11 @@ Route::group(['middleware' => TokenVerificationMiddleware::class], function () {
     Route::post('/user-logout', [UserController::class, 'userLogout']);
     Route::get('/user', [UserController::class, 'getUser']);
     Route::patch('/reset-password', [UserController::class, 'resetPassword']);
+
+
+    // Customer
+    Route::apiResource('/customers', CustomerController::class);
+
+    // Category
+    Route::apiResource('/categories', CategoryController::class);
 });
