@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateInvoiceRequest extends FormRequest
 {
@@ -24,5 +26,19 @@ class UpdateInvoiceRequest extends FormRequest
         return [
             //
         ];
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param Validator $validator
+     */
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'success' => false,
+            'message' => 'Validation errors',
+            'data' => $validator->errors()
+        ]));
     }
 }
