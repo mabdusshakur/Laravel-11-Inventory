@@ -39,13 +39,13 @@ class JWTToken
     {
         try {
             if ($encodedToken == null) {
-                return 'unauthorized';
+                return 'Unauthorized';
             } else {
                 $key = env('JWT_KEY');
                 return JWT::decode($encodedToken, new Key($key, 'HS256'));
             }
         } catch (\Throwable $th) {
-            return 'unauthorized';
+            return 'Unauthorized';
         }
     }
 }
