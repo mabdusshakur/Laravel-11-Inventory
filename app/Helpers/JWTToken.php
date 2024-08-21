@@ -23,8 +23,8 @@ class JWTToken
             'iss' => 'pos-app',
             'iat' => time(),
             'exp' => time() + $expiryTime,
-            'userEmail' => $userEmail,
-            'userId' => $userId
+            'email' => $userEmail,
+            'id' => $userId
         ];
         return JWT::encode($payload, $key, 'HS256');
     }
