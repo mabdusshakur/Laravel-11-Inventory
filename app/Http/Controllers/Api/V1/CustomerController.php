@@ -92,9 +92,10 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Customer $customer)
+    public function destroy($customer)
     {
         try {
+            $customer = Customer::where('user_id', $this->getUserId(request()))->findOrFail($customer);
             $customer->delete();
             return $this->sendSuccess("Customer Deleted", []);
         } catch (\Throwable $th) {
