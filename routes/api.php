@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CustomerController;
+use App\Http\Controllers\Api\V1\InvoiceController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Middleware\TokenVerificationMiddleware;
@@ -15,6 +16,8 @@ Route::post('/send-otp', [UserController::class, 'sendOtp']);
 Route::post('/verify-otp', [UserController::class, 'verifyOtp']);
 
 Route::group(['middleware' => TokenVerificationMiddleware::class], function () {
+
+    // User
     Route::post('/user-logout', [UserController::class, 'userLogout']);
     Route::get('/user', [UserController::class, 'getUser']);
     Route::patch('/reset-password', [UserController::class, 'resetPassword']);
@@ -28,4 +31,8 @@ Route::group(['middleware' => TokenVerificationMiddleware::class], function () {
 
     // Product
     Route::apiResource('/products', ProductController::class);
+
+    // Invoice
+    Route::apiResource('/invoices', InvoiceController::class);
+
 });
