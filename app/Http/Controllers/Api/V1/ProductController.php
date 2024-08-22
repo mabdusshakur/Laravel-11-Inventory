@@ -41,8 +41,8 @@ class ProductController extends Controller
             if ($request->file('image')) {
                 $image = $request->file('image');
                 $image_name = time() . '.' . $image->extension();
-                $image->move(public_path('images'), $image_name);
-                $img_url = "images/" . $image_name;
+                $image->move(public_path('uploads/images'), $image_name);
+                $img_url = "uploads/images/" . $image_name;
             }
 
             $product = Product::create([
@@ -105,8 +105,8 @@ class ProductController extends Controller
             if ($request->file('image')) {
                 $image = $request->file('image');
                 $image_name = time() . '.' . $image->extension();
-                $image->move(public_path('images'), $image_name);
-                $new_img_url = "images/" . $image_name;
+                $image->move(public_path('uploads/images'), $image_name);
+                $new_img_url = "uploads/images/" . $image_name;
                 unlink($product->img_url);
             }
 
