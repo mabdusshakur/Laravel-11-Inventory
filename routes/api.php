@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CustomerController;
+use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Middleware\TokenVerificationMiddleware;
 use Illuminate\Http\Request;
@@ -24,4 +25,7 @@ Route::group(['middleware' => TokenVerificationMiddleware::class], function () {
 
     // Category
     Route::apiResource('/categories', CategoryController::class);
+
+    // Product
+    Route::apiResource('/products', ProductController::class);
 });
