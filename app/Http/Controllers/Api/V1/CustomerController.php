@@ -19,7 +19,7 @@ class CustomerController extends Controller
             $customers = Customer::where('user_id', $this->getUserId(request()))->get();
             return $this->sendSuccess("Customer list", CustomerResource::collection($customers));
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to get Customer list", 500, $th->getMessage());
+            return $this->sendError("Failed to get Customer list", 200, $th->getMessage());
         }
     }
 
@@ -45,7 +45,7 @@ class CustomerController extends Controller
             ]);
             return $this->sendSuccess("Customer Created", new CustomerResource($customer), 201);
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to Create Customer", 500, $th->getMessage());
+            return $this->sendError("Failed to Create Customer", 200, $th->getMessage());
         }
     }
 
@@ -58,7 +58,7 @@ class CustomerController extends Controller
             $customer = Customer::where('user_id', $this->getUserId(request()))->findOrFail($customer);
             return $this->sendSuccess("Customer Details", new CustomerResource($customer));
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to get Customer Details", 500, $th->getMessage());
+            return $this->sendError("Failed to get Customer Details", 200, $th->getMessage());
         }
     }
 
@@ -85,7 +85,7 @@ class CustomerController extends Controller
             ]);
             return $this->sendSuccess("Customer Updated", new CustomerResource($customer));
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to Update Customer", 500, $th->getMessage());
+            return $this->sendError("Failed to Update Customer", 200, $th->getMessage());
         }
     }
 
@@ -99,7 +99,7 @@ class CustomerController extends Controller
             $customer->delete();
             return $this->sendSuccess("Customer Deleted", []);
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to Delete Customer", 500, $th->getMessage());
+            return $this->sendError("Failed to Delete Customer", 200, $th->getMessage());
         }
     }
 }

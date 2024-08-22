@@ -46,23 +46,23 @@ class UserController extends Controller
         try {
             $user = User::where('email', $request->email)->first();
             if (!$user) {
-                return $this->sendError('User not found', 404);
+                return $this->sendError('User not found', 200);
             }
             $auth = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
             if (!$auth) {
-                return $this->sendError('Invalid Password', 500);
+                return $this->sendError('Invalid Password', 200);
             }
 
             $expiryTime = 60 * 60 * 24 * 30; // seconds * minutes * hours * days
             $token = JWTToken::createToken($user->email, $user->id, $expiryTime);
 
             if (!$token) {
-                return $this->sendError('Token creation failed', 500);
+                return $this->sendError('Token creation failed', 200);
             }
 
             return $this->sendSuccess('User logged in successfully', "")->cookie('token', $token, time() + $expiryTime);
         } catch (\Throwable $th) {
-            return $this->sendError('User login failed', 500);
+            return $this->sendError('User login failed', 200, $th->getMessage());
         }
     }
 
@@ -84,7 +84,7 @@ class UserController extends Controller
             // Clear the token from cookie
             return $this->sendSuccess('Logout Success', 'Logout Success')->cookie('token', '', -1);
         } catch (\Throwable $th) {
-            return $this->sendError('User logout failed', 500, $th->getMessage());
+            return $this->sendError('User logout failed', 200, $th->getMessage());
         }
     }
 
@@ -102,7 +102,7 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             return $this->sendSuccess('User profile fetched successfully.', $user);
         } catch (\Throwable $th) {
-            return $this->sendError('User profile failed', 500, $th->getMessage());
+            return $this->sendError('User profile failed', 200, $th->getMessage());
         }
     }
 
@@ -125,7 +125,7 @@ class UserController extends Controller
             $user = User::where('email', $request->email)->first();
 
             if (!$user) {
-                return $this->sendError('User not found', 404);
+                return $this->sendError('User not found', 200);
             }
             // generate a random 4 digit number
             $otp = rand(1000, 9999);
@@ -138,7 +138,7 @@ class UserController extends Controller
 
             return $this->sendSuccess('OTP sent successfully', "");
         } catch (\Throwable $th) {
-            return $this->sendError('OTP sending failed', 500, $th->getMessage());
+            return $this->sendError('OTP sending failed', 200, $th->getMessage());
         }
     }
 
@@ -166,10 +166,10 @@ class UserController extends Controller
             // find the user with the email
             $user = User::where('email', $email)->first();
             if (!$user) {
-                return $this->sendError('User not found', 404);
+                return $this->sendError('User not found', 200);
             }
             if ($user->otp != $otp) {
-                return $this->sendError('Invalid OTP', 500);
+                return $this->sendError('Invalid OTP', 200);
             }
 
             // reset the otp to 0 of the user
@@ -180,13 +180,13 @@ class UserController extends Controller
             $expiry_time = 60 * 5; // 5 minutes
             $token = JWTToken::createToken($user->email, $user->id, $expiry_time);
             if (!$token) {
-                return $this->sendError('Token creation failed', 500);
+                return $this->sendError('Token creation failed', 200);
             }
 
             return $this->sendSuccess('OTP verified successfully', "")->cookie('token', $token, $expiry_time);
 
         } catch (\Throwable $th) {
-            return $this->sendError('OTP verification failed', 500, $th->getMessage());
+            return $this->sendError('OTP verification failed', 200, $th->getMessage());
         }
     }
 
@@ -203,18 +203,17 @@ class UserController extends Controller
         try {
             // validate the request
             $request->validate([
-                'email' => 'required|email',
                 'password' => 'required|min:6'
             ]);
 
             // get the email and password from the request
-            $email = $request->email;
+            $email = $request->headers->get('email');
             $password = $request->password;
 
             // find the user with the email
             $user = User::where('email', $email)->first();
             if (!$user) {
-                return $this->sendError('User not found', 404);
+                return $this->sendError('User not found', 200);
             }
 
             // reset the password of the user
@@ -223,7 +222,7 @@ class UserController extends Controller
 
             return $this->sendSuccess('Password reset successfully', "")->cookie('token', '', -1);
         } catch (\Throwable $th) {
-            return $this->sendError('Password reset failed', 500, $th->getMessage());
+            return $this->sendError('Password reset failed', 200, $th->getMessage());
         }
     }
 

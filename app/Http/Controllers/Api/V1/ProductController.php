@@ -19,7 +19,7 @@ class ProductController extends Controller
             $products = Product::where('user_id', $this->getUserId(request()))->get();
             return $this->sendSuccess("Product list", ProductResource::collection($products));
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to get Product list", 500, $th->getMessage());
+            return $this->sendError("Failed to get Product list", 200, $th->getMessage());
         }
     }
 
@@ -54,14 +54,14 @@ class ProductController extends Controller
                 'user_id' => $request->user_id,
             ]);
             if (!$product) {
-                return $this->sendError("Failed to Create Product", 500);
+                return $this->sendError("Failed to Create Product", 200);
                 if ($img_url) {
                     unlink($img_url);
                 }
             }
             return $this->sendSuccess("Product Created", new ProductResource($product), 201);
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to Create Product", 500, $th->getMessage());
+            return $this->sendError("Failed to Create Product", 200, $th->getMessage());
         }
     }
 
@@ -74,7 +74,7 @@ class ProductController extends Controller
             $product = Product::where('user_id', $this->getUserId(request()))->findOrFail($product);
             return $this->sendSuccess("Product Details", new ProductResource($product));
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to get Product Details", 500, $th->getMessage());
+            return $this->sendError("Failed to get Product Details", 200, $th->getMessage());
         }
     }
 
@@ -114,11 +114,11 @@ class ProductController extends Controller
             $product->save();
 
             if (!$product) {
-                return $this->sendError("Failed to Update Product", 500);
+                return $this->sendError("Failed to Update Product", 200);
             }
             return $this->sendSuccess("Product Updated", new ProductResource($product));
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to Update Product", 500, $th->getMessage());
+            return $this->sendError("Failed to Update Product", 200, $th->getMessage());
         }
     }
 
@@ -130,14 +130,14 @@ class ProductController extends Controller
         try {
             $product = Product::where('user_id', $this->getUserId(request()))->findOrFail($product);
             if (!$product->delete()) {
-                return $this->sendError("Failed to Delete Product", 500);
+                return $this->sendError("Failed to Delete Product", 200);
             }
             if ($product->img_url) {
                 unlink($product->img_url);
             }
             return $this->sendSuccess("Product Deleted", []);
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to Delete Product", 500, $th->getMessage());
+            return $this->sendError("Failed to Delete Product", 200, $th->getMessage());
         }
     }
 }

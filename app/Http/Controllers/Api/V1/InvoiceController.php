@@ -20,7 +20,7 @@ class InvoiceController extends Controller
             $invoices = Invoice::where('user_id', $this->getUserId(request()))->with('customer')->get();
             return $this->sendSuccess("Invoices fetched successfully", $invoices, 200);
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to fetch Invoices", 500, $th->getMessage());
+            return $this->sendError("Failed to fetch Invoices", 200, $th->getMessage());
         }
     }
 
@@ -67,7 +67,7 @@ class InvoiceController extends Controller
             return $this->sendSuccess("Invoice created successfully", $invoice, 201);
 
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to create Invoice", 500, $th->getMessage());
+            return $this->sendError("Failed to create Invoice", 200, $th->getMessage());
         }
     }
 
@@ -80,7 +80,7 @@ class InvoiceController extends Controller
             $invoice = Invoice::where('user_id', $this->getUserId(request()))->with('customer', 'invoiceProducts')->where('id', $invoice)->first();
             return $this->sendSuccess("Invoice fetched successfully", $invoice, 200);
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to fetch Invoice", 500, $th->getMessage());
+            return $this->sendError("Failed to fetch Invoice", 200, $th->getMessage());
         }
     }
 
@@ -109,7 +109,7 @@ class InvoiceController extends Controller
             Invoice::where('user_id', $this->getUserId(request()))->where('id', $invoice)->delete();
             return $this->sendSuccess("Invoice deleted successfully", null, 200);
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to delete Invoice", 500, $th->getMessage());
+            return $this->sendError("Failed to delete Invoice", 200, $th->getMessage());
         }
     }
 }

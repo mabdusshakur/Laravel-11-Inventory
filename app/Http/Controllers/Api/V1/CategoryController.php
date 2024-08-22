@@ -19,7 +19,7 @@ class CategoryController extends Controller
             $category = Category::where('user_id', $this->getUserId(request()))->get();
             return $this->sendSuccess("Category list", CategoryResource::collection($category));
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to get Category list", 500, $th->getMessage());
+            return $this->sendError("Failed to get Category list", 200, $th->getMessage());
         }
     }
 
@@ -43,7 +43,7 @@ class CategoryController extends Controller
             ]);
             return $this->sendSuccess("Category Created", new CategoryResource($category), 201);
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to Create Category", 500, $th->getMessage());
+            return $this->sendError("Failed to Create Category", 200, $th->getMessage());
         }
     }
 
@@ -56,7 +56,7 @@ class CategoryController extends Controller
             $category = Category::where('user_id', $this->getUserId(request()))->findOrFail($category);
             return $this->sendSuccess("Category Details", new CategoryResource($category));
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to get Category Details", 500, $th->getMessage());
+            return $this->sendError("Failed to get Category Details", 200, $th->getMessage());
         }
     }
 
@@ -82,7 +82,7 @@ class CategoryController extends Controller
             }
             return $this->sendSuccess("Category Updated", []);
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to Update Category", 500, $th->getMessage());
+            return $this->sendError("Failed to Update Category", 200, $th->getMessage());
         }
     }
 
@@ -96,7 +96,7 @@ class CategoryController extends Controller
             $category->delete();
             return $this->sendSuccess("Category Deleted", []);
         } catch (\Throwable $th) {
-            return $this->sendError("Failed to Delete Category", 500, $th->getMessage());
+            return $this->sendError("Failed to Delete Category", 200, $th->getMessage());
         }
     }
 }
