@@ -9,18 +9,27 @@ use App\Http\Middleware\TokenVerificationMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/user-registration', [UserController::class, 'userRegistration']);
-Route::post('/user-login', [UserController::class, 'userLogin']);
-
-Route::post('/send-otp', [UserController::class, 'sendOtp']);
-Route::post('/verify-otp', [UserController::class, 'verifyOtp']);
+Route::group(['prefix' => 'auth'], function () {
+    // Auth
+    Route::post('/register', [UserController::class, 'userRegistration']);
+    Route::post('/login', [UserController::class, 'userLogin']);
+    Route::post('/send-otp', [UserController::class, 'sendOtp']);
+    Route::post('/verify-otp', [UserController::class, 'verifyOtp']);
+});
 
 Route::group(['middleware' => TokenVerificationMiddleware::class], function () {
 
-    // User
-    Route::post('/user-logout', [UserController::class, 'userLogout']);
-    Route::get('/user', [UserController::class, 'getUser']);
-    Route::patch('/reset-password', [UserController::class, 'resetPassword']);
+    Route::group(['prefix' => 'auth'], function () {
+        // Auth
+        Route::post('/logout', [UserController::class, 'userLogout']);
+    });
+
+    Route::group(['prefix' => 'user'], function () {
+        // User
+        Route::get('/profile', [UserController::class, 'getUser']);
+        Route::patch('/reset-password', [UserController::class, 'resetPassword']);
+    });
+
 
 
     // Customer
@@ -34,5 +43,4 @@ Route::group(['middleware' => TokenVerificationMiddleware::class], function () {
 
     // Invoice
     Route::apiResource('/invoices', InvoiceController::class);
-
 });
