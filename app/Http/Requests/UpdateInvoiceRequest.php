@@ -24,7 +24,12 @@ class UpdateInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'total' => 'required|numeric',
+            'discount' => 'required|numeric',
+            'vat' => 'required|numeric',
+            'payable' => 'required|numeric',
+            'user_id' => 'required|exists:users,id',
+            'customer_id' => 'required|exists:customers,id',
         ];
     }
 
