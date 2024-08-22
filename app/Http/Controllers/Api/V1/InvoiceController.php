@@ -6,6 +6,8 @@ use App\Models\Invoice;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
+use App\Models\InvoiceProduct;
+use App\Models\Product;
 
 class InvoiceController extends Controller
 {
@@ -14,7 +16,12 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $invoices = Invoice::where('user_id', $this->getUserId(request()))->with('customer')->get();
+            return $this->sendSuccess("Invoices fetched successfully", $invoices, 200);
+        } catch (\Throwable $th) {
+            return $this->sendError("Failed to fetch Invoices", 500, $th->getMessage());
+        }
     }
 
     /**
@@ -30,15 +37,51 @@ class InvoiceController extends Controller
      */
     public function store(StoreInvoiceRequest $request)
     {
-        //
+        try {
+            $invoice = Invoice::create([
+                'total' => 0,
+                'discount' => $request->discount,
+                'vat' => $request->vat,
+                'payable' => 0,
+                'user_id' => $this->getUserId($request),
+                'customer_id' => $request->customer_id,
+            ]);
+
+            $totalPrice = 0;
+            foreach ($request->products as $product) {
+                $productPrice = Product::where('id', $product['product_id'])->first()->price;
+                InvoiceProduct::create([
+                    'quantity' => $product['quantity'],
+                    'sale_price' => $product['quantity'] * $productPrice,
+                    'product_id' => $product['product_id'],
+                    'invoice_id' => $invoice->id,
+                    'user_id' => $invoice->user_id,
+                ]);
+                $totalPrice += $product['quantity'] * $productPrice;
+            }
+
+            $invoice->total = $totalPrice;
+            $invoice->payable = ($totalPrice - $request->discount) + $request->vat;
+            $invoice->save();
+
+            return $this->sendSuccess("Invoice created successfully", $invoice, 201);
+
+        } catch (\Throwable $th) {
+            return $this->sendError("Failed to create Invoice", 500, $th->getMessage());
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Invoice $invoice)
+    public function show($invoice)
     {
-        //
+        try {
+            $invoice = Invoice::where('user_id', $this->getUserId(request()))->with('customer', 'invoiceProducts')->where('id', $invoice)->first();
+            return $this->sendSuccess("Invoice fetched successfully", $invoice, 200);
+        } catch (\Throwable $th) {
+            return $this->sendError("Failed to fetch Invoice", 500, $th->getMessage());
+        }
     }
 
     /**
@@ -54,14 +97,19 @@ class InvoiceController extends Controller
      */
     public function update(UpdateInvoiceRequest $request, Invoice $invoice)
     {
-        //
+        // invoice no need to update just delete, and create a new one
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Invoice $invoice)
+    public function destroy($invoice)
     {
-        //
+        try {
+            Invoice::where('user_id', $this->getUserId(request()))->where('id', $invoice)->delete();
+            return $this->sendSuccess("Invoice deleted successfully", null, 200);
+        } catch (\Throwable $th) {
+            return $this->sendError("Failed to delete Invoice", 500, $th->getMessage());
+        }
     }
 }
