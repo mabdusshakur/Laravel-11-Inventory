@@ -107,6 +107,25 @@ class UserController extends Controller
     }
 
     /**
+     * Summary of updateUser
+     * @param \Illuminate\Http\Request $request
+     * @return Controller::sendSuccess| Controller::sendError
+     *  - on success, it updates the user profile and response with a success message, and the updated user object.
+     *  - on failure, it response with an error message.
+     */
+    function updateUser(Request $request)
+    {
+        try {
+            $id = $request->headers->get('id');
+            $user = User::findOrFail($id);
+            $user->update($request->all());
+            return $this->sendSuccess('User profile updated successfully.', $user);
+        } catch (\Throwable $th) {
+            return $this->sendError('User profile update failed', 200, $th->getMessage());
+        }
+    }
+
+    /**
      * Summary of sendOtp
      * @param \Illuminate\Http\Request $request
      * @return Controller::sendSuccess| Controller::sendError
