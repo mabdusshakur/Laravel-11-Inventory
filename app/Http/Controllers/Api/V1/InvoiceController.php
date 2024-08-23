@@ -106,6 +106,7 @@ class InvoiceController extends Controller
     public function destroy($invoice)
     {
         try {
+            InvoiceProduct::where('invoice_id', $invoice)->delete();
             Invoice::where('user_id', $this->getUserId(request()))->where('id', $invoice)->delete();
             return $this->sendSuccess("Invoice deleted successfully", null, 200);
         } catch (\Throwable $th) {
