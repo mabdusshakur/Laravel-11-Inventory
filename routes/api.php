@@ -29,6 +29,7 @@ Route::group(['middleware' => TokenVerificationMiddleware::class], function () {
         // User
         Route::get('/profile', [UserController::class, 'getUser']);
         Route::patch('/reset-password', [UserController::class, 'resetPassword']);
+        Route::put('/profile', [UserController::class, 'updateUser']);
     });
 
 
