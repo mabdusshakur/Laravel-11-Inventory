@@ -54,7 +54,7 @@ class CategoryController extends Controller
     {
         try {
             $category = Category::where('user_id', $this->getUserId(request()))->findOrFail($category);
-            return $this->sendSuccess("Category Details", new CategoryResource($category));
+            return $this->sendSuccess("Category Details", $category);
         } catch (\Throwable $th) {
             return $this->sendError("Failed to get Category Details", 200, $th->getMessage());
         }

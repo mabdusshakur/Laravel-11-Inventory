@@ -56,7 +56,7 @@ class CustomerController extends Controller
     {
         try {
             $customer = Customer::where('user_id', $this->getUserId(request()))->findOrFail($customer);
-            return $this->sendSuccess("Customer Details", new CustomerResource($customer));
+            return $this->sendSuccess("Customer Details", $customer);
         } catch (\Throwable $th) {
             return $this->sendError("Failed to get Customer Details", 200, $th->getMessage());
         }
@@ -83,7 +83,7 @@ class CustomerController extends Controller
                 'mobile' => $request->mobile,
                 'user_id' => $user_id,
             ]);
-            return $this->sendSuccess("Customer Updated", new CustomerResource($customer));
+            return $this->sendSuccess("Customer Updated", $customer);
         } catch (\Throwable $th) {
             return $this->sendError("Failed to Update Customer", 200, $th->getMessage());
         }

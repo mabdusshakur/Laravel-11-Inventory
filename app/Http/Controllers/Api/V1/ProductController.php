@@ -72,7 +72,7 @@ class ProductController extends Controller
     {
         try {
             $product = Product::where('user_id', $this->getUserId(request()))->findOrFail($product);
-            return $this->sendSuccess("Product Details", new ProductResource($product));
+            return $this->sendSuccess("Product Details", $product);
         } catch (\Throwable $th) {
             return $this->sendError("Failed to get Product Details", 200, $th->getMessage());
         }
