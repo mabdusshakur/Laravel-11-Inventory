@@ -29,7 +29,6 @@ class UpdateProductRequest extends FormRequest
             'unit' => 'required|integer',
             'image' => 'image|max:4096', // 4MB
             'category_id' => 'required|integer|exists:categories,id',
-            'user_id' => 'required|integer|exists:users,id'
         ];
     }
 
