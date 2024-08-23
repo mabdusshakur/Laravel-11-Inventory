@@ -53,7 +53,7 @@
                             <h6>User Name</h6>
                             <hr class="user-dropdown-divider p-0" />
                         </div>
-                        <a class="side-bar-item" href="{{ url('/userProfile') }}">
+                        <a class="side-bar-item" href="{{ route('web.profile') }}">
                             <span class="side-bar-item-caption">Profile</span>
                         </a>
                         <a class="side-bar-item" onclick="logout()">
