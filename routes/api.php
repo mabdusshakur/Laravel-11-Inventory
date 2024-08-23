@@ -40,6 +40,7 @@ Route::group(['middleware' => TokenVerificationMiddleware::class], function () {
 
     // Product
     Route::apiResource('/products', ProductController::class);
+    Route::post('/products/{product}', [ProductController::class, 'update']);
 
     // Invoice
     Route::apiResource('/invoices', InvoiceController::class);
