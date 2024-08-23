@@ -51,7 +51,7 @@ class ProductController extends Controller
                 'unit' => $request->unit,
                 'img_url' => $img_url,
                 'category_id' => $request->category_id,
-                'user_id' => $request->user_id,
+                'user_id' => $this->getUserId($request),
             ]);
             if (!$product) {
                 return $this->sendError("Failed to Create Product", 200);
