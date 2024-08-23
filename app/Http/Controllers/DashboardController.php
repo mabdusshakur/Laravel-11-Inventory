@@ -40,4 +40,9 @@ class DashboardController extends Controller
     {
         return view('dashboard.report-page');
     }
+
+    function profilePage()
+    {
+        return view('dashboard.profile-page');
+    }
 }
