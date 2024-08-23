@@ -56,7 +56,7 @@
                         <a class="side-bar-item" href="{{ url('/userProfile') }}">
                             <span class="side-bar-item-caption">Profile</span>
                         </a>
-                        <a class="side-bar-item" href="{{ url('/logout') }}">
+                        <a class="side-bar-item" onclick="logout()">
                             <span class="side-bar-item-caption">Logout</span>
                         </a>
                     </div>
@@ -123,6 +123,12 @@
                 content.classList.remove("content-expand");
                 content.classList.add("content");
             }
+        }
+
+
+        function logout() {
+            axios.post("/api/auth/logout");
+            window.location.href = '{{ route('web.login') }}';
         }
     </script>
 
