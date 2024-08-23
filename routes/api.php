@@ -49,4 +49,5 @@ Route::group(['middleware' => TokenVerificationMiddleware::class], function () {
 
     // Report
     Route::get('/sales-report/{fromDate}/{toDate}', [ReportController::class, 'salesReport']);
+    Route::get('/summary', [ReportController::class, 'summary']);
 });
