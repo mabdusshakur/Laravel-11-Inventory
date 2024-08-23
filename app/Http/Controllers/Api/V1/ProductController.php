@@ -97,7 +97,7 @@ class ProductController extends Controller
             $product->price = $request->price;
             $product->unit = $request->unit;
             $product->category_id = $request->category_id;
-            $product->user_id = $request->user_id;
+            $product->user_id = $this->getUserId($request);
 
 
             // if new image is uploaded, delete the old image and save the new image url on db column
@@ -129,11 +129,11 @@ class ProductController extends Controller
     {
         try {
             $product = Product::where('user_id', $this->getUserId(request()))->findOrFail($product);
-            if (!$product->delete()) {
-                return $this->sendError("Failed to Delete Product", 200);
-            }
             if ($product->img_url) {
                 unlink($product->img_url);
+            }
+            if (!$product->delete()) {
+                return $this->sendError("Failed to Delete Product", 200);
             }
             return $this->sendSuccess("Product Deleted", []);
         } catch (\Throwable $th) {
