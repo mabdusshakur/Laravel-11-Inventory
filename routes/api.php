@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\InvoiceController;
 use App\Http\Controllers\Api\V1\ProductController;
+use App\Http\Controllers\api\v1\ReportController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Middleware\TokenVerificationMiddleware;
 use Illuminate\Http\Request;
@@ -44,4 +45,8 @@ Route::group(['middleware' => TokenVerificationMiddleware::class], function () {
 
     // Invoice
     Route::apiResource('/invoices', InvoiceController::class);
+
+
+    // Report
+    Route::get('/sales-report/{fromDate}/{toDate}', [ReportController::class, 'salesReport']);
 });
