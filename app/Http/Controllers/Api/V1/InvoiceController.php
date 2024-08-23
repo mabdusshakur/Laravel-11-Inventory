@@ -77,7 +77,7 @@ class InvoiceController extends Controller
     public function show($invoice)
     {
         try {
-            $invoice = Invoice::where('user_id', $this->getUserId(request()))->with('customer', 'invoiceProducts')->where('id', $invoice)->first();
+            $invoice = Invoice::where('user_id', $this->getUserId(request()))->with(['customer', 'invoiceProducts.product'])->where('id', $invoice)->first();
             return $this->sendSuccess("Invoice fetched successfully", $invoice, 200);
         } catch (\Throwable $th) {
             return $this->sendError("Failed to fetch Invoice", 200, $th->getMessage());
