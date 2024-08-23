@@ -18,3 +18,5 @@ Route::get('/sale', [DashboardController::class, 'salePage'])->name('web.sale');
 Route::get('/invoice', [DashboardController::class, 'invoicePage'])->name('web.invoice');
 Route::get('/report', [DashboardController::class, 'reportPage'])->name('web.report');
 Route::get('/profile', [DashboardController::class, 'profilePage'])->name('web.profile');
+
+Route::view('/', 'home');
