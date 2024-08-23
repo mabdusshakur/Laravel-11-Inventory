@@ -28,7 +28,7 @@ class UpdateInvoiceRequest extends FormRequest
             'discount' => 'required|numeric',
             'vat' => 'required|numeric',
             // 'payable' => 'required|numeric',
-            'user_id' => 'required|exists:users,id',
+            // 'user_id' => 'required|exists:users,id',
             'customer_id' => 'required|exists:customers,id',
         ];
     }
