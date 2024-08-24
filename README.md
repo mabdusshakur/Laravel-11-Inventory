@@ -8,7 +8,7 @@
     -   Secure Password reset process
     -   More over its Multi Vendor POS System
 
-    ** Change Log **
+-   ** Change Log **
 
     -   Added Client Side Authentication (`24/08/2024`)
 
