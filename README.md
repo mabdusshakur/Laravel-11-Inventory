@@ -13,7 +13,8 @@
     -   Added Client Side Authentication (`24/08/2024`)
 
 -   ** Requirements **
-    -- PHP 8.2 >= as its Laravel 11
+
+    -   PHP 8.2 >= as its Laravel 11
 
 -   ** Installation **
 
