@@ -192,6 +192,15 @@ class UserController extends Controller
             if (!$user) {
                 return $this->sendError('User not found', 200);
             }
+
+            // check if otp is expired or not - (1 minute)
+            if ($user->updated_at->diffInMinutes(now()) > 1) {
+                $user->otp = 0;
+                $user->save();
+                return $this->sendError('OTP expired, Go back and generate another Otp', 200);
+            }
+
+            // check if the otp is valid
             if ($user->otp != $otp) {
                 return $this->sendError('Invalid OTP', 200);
             }
