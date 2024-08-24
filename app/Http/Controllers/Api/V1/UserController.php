@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Helpers\JWTToken;
+use App\Mail\OTPMail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -10,6 +11,7 @@ use App\Http\Requests\LoginUserRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreUserRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -149,12 +151,15 @@ class UserController extends Controller
             // generate a random 4 digit number
             $otp = rand(1000, 9999);
 
-            // send the otp to the user's email
-
             // set the otp in the user's otp column
             $user->otp = $otp;
             $user->save();
 
+            // send the otp to the user's email
+            $mail = Mail::to($user->email)->send(new OTPMail($user->otp));
+            if (!$mail) {
+                return $this->sendError('OTP sending failed', 200);
+            }
             return $this->sendSuccess('OTP sent successfully', "");
         } catch (\Throwable $th) {
             return $this->sendError('OTP sending failed', 200, $th->getMessage());
