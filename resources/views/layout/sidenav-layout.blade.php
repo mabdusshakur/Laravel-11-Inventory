@@ -24,6 +24,7 @@
     <script src="{{ asset('js/config.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
 
+    {{-- For The Client Side Auth --}}
     <script src=" https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js "></script>
 
 </head>
@@ -130,13 +131,13 @@
 
         function logout() {
             axios.post("/api/auth/logout");
-            setLoggedOut();
+            setLoggedOut(); // Client side Auth
             window.location.href = '{{ route('web.login') }}';
         }
     </script>
 
+    {{-- Client side Auth --}}
     <script src="{{ asset('js/auth.js') }}"></script>
-
     <script>
         auth();
     </script>

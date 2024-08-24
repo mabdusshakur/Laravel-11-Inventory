@@ -14,6 +14,8 @@
     <script src="{{ asset('js/toastify-js.js') }}"></script>
     <script src="{{ asset('js/axios.min.js') }}"></script>
     <script src="{{ asset('js/config.js') }}"></script>
+
+    {{-- For The Client Side Auth --}}
     <script src=" https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js "></script>
 </head>
 
@@ -28,9 +30,10 @@
     <div>
         @yield('content')
     </div>
-    <script></script>
 
     <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
+
+    {{-- Client side Auth --}}
     <script src="{{ asset('js/auth.js') }}"></script>
 </body>
 
