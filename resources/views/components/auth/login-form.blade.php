@@ -41,6 +41,7 @@
             });
             hideLoader()
             if (res.status === 200 && res.data['success'] === true) {
+                setLoggedIn();
                 window.location.href = '{{ route('web.dashboard') }}';
             } else {
                 errorToast(res.data['message']);
