@@ -55,14 +55,14 @@
             "email": "required|email",
             "otp": "required|string|max:4"
         }
-        * sets a token in the cookie with user email encrypted
+        ** sets a token in the cookie with user email encrypted
         ```
 -   -   `/user/reset-password` (PATCH): Reset user password.
         ```json
         {
             "password": "required|string"
         }
-        * requires the email from the token set on the cookie
+        ** requires the email from the token set on the cookie
         ```
 -   -   `/auth/logout` (POST): User logout.
 -   -   `/user/profile` (GET): Get user profile information.
