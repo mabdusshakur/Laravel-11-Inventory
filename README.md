@@ -25,6 +25,7 @@
 
 -   Endpoints:
 -   note : most of the request requires the id & email from the token set on the cookie
+-   Note: except for register, login, send-otp, verify-otp, all other endpoints require a valid JWT token in the cookie, named `token`.
 -
 -   -   `/auth/register` (POST): Register a new user.
         ```json
@@ -113,9 +114,6 @@
 -   -   `/sales-report/{fromDate}/{toDate}` (GET): Generate a sales report between the specified
         dates.
 -   -   `/summary` (GET): Get a summary of sales data.
--
--   Note: Some endpoints require authentication using a token.
-
 -
 -   Response Types:
 -
